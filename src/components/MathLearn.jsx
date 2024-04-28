@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -8,6 +8,7 @@ const MathLearn = () => {
   const [num2, setNum2] = useState(0)
   const [userAnswer, setUserAnswer] = useState('')
   const [result, setResult] = useState(null)
+  const inputRef = useRef(null)
 
   const generateRandomNumber = maxNum => {
     return Math.floor(Math.random() * (maxNum + 1)) // Generates a random number between 0 and maxNum
@@ -19,6 +20,11 @@ const MathLearn = () => {
     setNum2(generateRandomNumber(10))
     setResult(null)
     setUserAnswer('')
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
+    }, 500)
   }
 
   const checkAnswer = () => {
@@ -47,6 +53,9 @@ const MathLearn = () => {
         onClose: setUserAnswer(''),
       })
       setResult(false)
+      if (inputRef.current) {
+        inputRef.current.focus()
+      }
     }
   }
 
@@ -100,6 +109,7 @@ const MathLearn = () => {
           <span className="text-xl">=</span>
           <input
             type="text"
+            ref={inputRef}
             value={userAnswer}
             onChange={e => setUserAnswer(e.target.value)}
             className="border-2 border-gray-400 rounded p-2 text-center w-20"
